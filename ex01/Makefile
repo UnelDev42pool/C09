@@ -1,23 +1,24 @@
-.MAIN: all
+SRCS	= srcs/ft_putchar.c srcs/ft_swap.c srcs/ft_putstr.c srcs/ft_strlen.c srcs/ft_strcmp.c
 
-all:
-	gcc -Wall -Wextra -Werror -c includes/ft.h srcs/ft_putchar.c srcs/ft_putstr.c srcs/ft_strlen.c srcs/ft_strcmp.c srcs/ft_swap.c
-	mv ft_putchar.o ft_putstr.o ft_strlen.o ft_strcmp.o ft_swap.o srcs/
-	ar rcs libft.a srcs/ft_putchar.o srcs/ft_putstr.o srcs/ft_strlen.o srcs/ft_strcmp.o srcs/ft_swap.o includes/ft.h.gch
+NAME	= libft.a
 
-libft.a:
-	gcc -Wall -Wextra -Werror -c includes/ft.h srcs/ft_putchar.c srcs/ft_putstr.c srcs/ft_strlen.c srcs/ft_strcmp.c srcs/ft_swap.c
-	mv ft_putchar.o ft_putstr.o ft_strlen.o ft_strcmp.o ft_swap.o srcs/
-	ar rcs libft.a srcs/ft_putchar.o srcs/ft_putstr.o srcs/ft_strlen.o srcs/ft_strcmp.o srcs/ft_swap.o includes/ft.h.gch
+OBJS	=  ${SRCS:.c=.o}
 
-clean:
-	rm -f srcs/*.o includes/ft.h.gch
+HEADERS	= includes/
 
-fclean:
-	rm -f srcs/*.o includes/ft.h.gch libft.a
+.c.o	:
+		gcc -Wall -Wextra -Werror -I ${HEADERS} -c $< -o ${<:.c=.o}
 
-re:
-	rm -f srcs/*.o includes/ft.h.gch libft.a
-	gcc -Wall -Wextra -Werror -c includes/ft.h srcs/ft_putchar.c srcs/ft_putstr.c srcs/ft_strlen.c srcs/ft_strcmp.c srcs/ft_swap.c
-	mv ft_putchar.o ft_putstr.o ft_strlen.o ft_strcmp.o ft_swap.o srcs/
-	ar rcs libft.a srcs/ft_putchar.o srcs/ft_putstr.o srcs/ft_strlen.o srcs/ft_strcmp.o srcs/ft_swap.o includes/ft.h.gch
+${NAME} : ${OBJS}
+		ar rc ${NAME} ${OBJS}
+
+all : ${NAME}
+
+
+clean :
+		rm -f ${OBJS}
+
+fclean : clean
+		rm -f ${NAME}
+
+re : fclean all
